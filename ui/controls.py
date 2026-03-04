@@ -36,12 +36,7 @@ class Controls:
         """
         Translate a pygame event into an action dictionary.
 
-        Args:
-            event: A pygame.Event object.
-
-        Returns:
-            Dict with at least an 'action' key.  Additional keys depend on
-            the action type.
+        Returns a dict with at least an 'action' key.
         """
         if not _PYGAME_AVAILABLE:
             return {"action": self.ACTION_NONE}
@@ -53,7 +48,10 @@ class Controls:
             return self._handle_keydown(event)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            return {"action": self.ACTION_BUTTON, "pos": event.pos}
+            # Only left-click counts as UI click
+            if getattr(event, "button", 1) == 1:
+                return {"action": self.ACTION_BUTTON, "pos": event.pos}
+            return {"action": self.ACTION_NONE}
 
         return {"action": self.ACTION_NONE}
 
@@ -61,7 +59,7 @@ class Controls:
     # Input accessors
     # ------------------------------------------------------------------
 
-    def get_grid_size_input(self) -> tuple:
+    def get_grid_size_input(self) -> tuple[int, int]:
         """Return the current (width, height) chosen by the user."""
         return (self._grid_size, self._grid_size)
 
@@ -71,11 +69,11 @@ class Controls:
 
     def set_grid_size(self, size: int) -> None:
         """Set grid size, clamped to valid range."""
-        self._grid_size = max(MIN_GRID_SIZE, min(MAX_GRID_SIZE, size))
+        self._grid_size = max(MIN_GRID_SIZE, min(MAX_GRID_SIZE, int(size)))
 
     def set_num_players(self, count: int) -> None:
-        """Set number of players (minimum 2)."""
-        self._num_players = max(2, count)
+        """Set number of players (clamped to 2..4 for this project spec)."""
+        self._num_players = max(2, min(4, int(count)))
 
     # ------------------------------------------------------------------
     # Private helpers
@@ -84,14 +82,34 @@ class Controls:
     def _handle_keydown(self, event) -> dict:
         """Map keyboard keys to actions."""
         key = event.key
-        if key == pygame.K_q or key == pygame.K_ESCAPE:
+
+        if key in (pygame.K_q, pygame.K_ESCAPE):
             return {"action": self.ACTION_QUIT}
+
         if key == pygame.K_r:
             return {"action": self.ACTION_RESTART}
+
         if key in (pygame.K_SPACE, pygame.K_s):
             return {"action": self.ACTION_STEP}
+
         if key == pygame.K_RETURN:
             return {"action": self.ACTION_RUN}
+
         if key == pygame.K_p:
             return {"action": self.ACTION_PAUSE}
+
+        # Optional: quick setup shortcuts (teacher mode)
+        # Arrow keys adjust grid size; number keys adjust players
+        if key == pygame.K_UP:
+            self.set_grid_size(self._grid_size + 1)
+            return {"action": self.ACTION_GRID_SIZE, "size": self._grid_size}
+
+        if key == pygame.K_DOWN:
+            self.set_grid_size(self._grid_size - 1)
+            return {"action": self.ACTION_GRID_SIZE, "size": self._grid_size}
+
+        if key in (pygame.K_2, pygame.K_3, pygame.K_4):
+            self.set_num_players(int(pygame.key.name(key)))
+            return {"action": self.ACTION_NUM_PLAYERS, "count": self._num_players}
+
         return {"action": self.ACTION_NONE, "key": key}
