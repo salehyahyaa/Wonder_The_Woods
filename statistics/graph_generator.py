@@ -5,7 +5,7 @@ class GraphGenerator:
     """Generates and optionally saves matplotlib charts from simulation results."""
 
     def __init__(self) -> None:
-        """Initialise the generator (matplotlib imported lazily)."""
+        """Initialize the generator (matplotlib imported lazily)."""
 
     # ------------------------------------------------------------------
     # Public chart methods

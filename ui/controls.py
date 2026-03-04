@@ -24,7 +24,7 @@ class Controls:
     ACTION_NONE = "none"
 
     def __init__(self) -> None:
-        """Initialise default input state."""
+        """Initialize default input state."""
         self._grid_size: int = DEFAULT_GRID_SIZE
         self._num_players: int = 2
 

@@ -13,7 +13,7 @@ class ExperimentRunner:
 
     def __init__(self, stats_engine: StatsEngine) -> None:
         """
-        Initialise the runner.
+        Initialize the runner.
 
         Args:
             stats_engine: A StatsEngine that will accumulate results.

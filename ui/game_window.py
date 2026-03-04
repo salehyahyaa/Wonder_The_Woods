@@ -25,7 +25,7 @@ class GameWindow:
 
     def __init__(self, version: int = VERSION_K2) -> None:
         """
-        Initialise the window for the given version.
+        Initialize the window for the given version.
 
         Args:
             version: One of VERSION_K2 (1), VERSION_35 (2), VERSION_68 (3).

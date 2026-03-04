@@ -15,7 +15,7 @@ class SimulationEngine:
 
     def __init__(self, grid, players: list, movement_strategy=None) -> None:
         """
-        Initialise the engine.
+        Initialize the engine.
 
         Args:
             grid:               The Grid in which players wander.

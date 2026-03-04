@@ -5,7 +5,7 @@ class StatsEngine:
     """Records results from individual simulation runs and computes summary statistics."""
 
     def __init__(self) -> None:
-        """Initialise with an empty run history."""
+        """Initialize with an empty run history."""
         self._runs: list[int] = []
 
     # ------------------------------------------------------------------

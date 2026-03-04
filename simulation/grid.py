@@ -8,7 +8,7 @@ class Grid:
 
     def __init__(self, width: int, height: int) -> None:
         """
-        Initialise a grid with the given dimensions.
+        Initialize a grid with the given dimensions.
 
         Args:
             width:  Number of columns (clamped to valid range).

@@ -17,7 +17,7 @@ class Renderer:
 
     def __init__(self, screen, cell_size: int = CELL_SIZE) -> None:
         """
-        Initialise the renderer.
+        Initialize the renderer.
 
         Args:
             screen:    The pygame Surface to draw on.

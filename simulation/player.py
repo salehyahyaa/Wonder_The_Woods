@@ -8,7 +8,7 @@ class Player:
 
     def __init__(self, player_id: int, x: int, y: int, color=None) -> None:
         """
-        Initialise a player.
+        Initialize a player.
 
         Args:
             player_id: Unique integer identifier.
