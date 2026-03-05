@@ -38,28 +38,30 @@ class Renderer:
     # Public drawing methods
     # ------------------------------------------------------------------
 
-    def draw_grid(self, grid) -> None:
+    def draw_grid(self, grid, offset: tuple[int, int] = (0, 0)) -> None:
         """Draw the background grid on *self._screen*."""
         if not _PYGAME_AVAILABLE:
             return
+        ox, oy = offset
         w, h = grid.get_dimensions()
         cs = self._cell_size
         for row in range(h):
             for col in range(w):
-                rect = pygame.Rect(col * cs, row * cs, cs, cs)
+                rect = pygame.Rect(ox + col * cs, oy + row * cs, cs, cs)
                 color = LIGHT_GREEN if (row + col) % 2 == 0 else DARK_GREEN
                 pygame.draw.rect(self._screen, color, rect)
                 pygame.draw.rect(self._screen, BLACK, rect, 1)
 
-    def draw_players(self, players: list, grid) -> None:
+    def draw_players(self, players: list, grid, offset: tuple[int, int] = (0, 0)) -> None:
         """Draw each player as a filled circle with an id label."""
         if not _PYGAME_AVAILABLE:
             return
+        ox, oy = offset
         cs = self._cell_size
         for player in players:
             x, y = player.position
-            cx = x * cs + cs // 2
-            cy = y * cs + cs // 2
+            cx = ox + x * cs + cs // 2
+            cy = oy + y * cs + cs // 2
             radius = cs // 3
             pygame.draw.circle(self._screen, player.get_color(), (cx, cy), radius)
             pygame.draw.circle(self._screen, BLACK, (cx, cy), radius, 2)
@@ -121,19 +123,21 @@ class Renderer:
             screen.blit(surf, (panel_x, y))
             y += surf.get_height() + 4
 
-    def draw_button(self, screen, rect: tuple, text: str, color: tuple) -> None:
+    def draw_button(self, screen, rect, text: str, color: tuple) -> None:
         """
         Draw a labelled rectangular button.
 
         Args:
             screen: Target pygame Surface.
-            rect:   (x, y, width, height) tuple.
+            rect:   tuple (x, y, w, h) OR pygame.Rect
             text:   Button label.
             color:  Background colour RGB tuple.
         """
         if not _PYGAME_AVAILABLE or self._font_small is None:
             return
-        r = pygame.Rect(*rect)
+
+        r = rect if hasattr(rect, "x") else pygame.Rect(*rect)
+
         pygame.draw.rect(screen, color, r, border_radius=6)
         pygame.draw.rect(screen, BLACK, r, 2, border_radius=6)
         label = self._font_small.render(text, True, BLACK)
