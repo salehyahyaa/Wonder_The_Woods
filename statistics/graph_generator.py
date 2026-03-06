@@ -2,23 +2,13 @@
 
 
 class GraphGenerator:
-    """Generates and optionally saves matplotlib charts from simulation results."""
 
-    def __init__(self) -> None:
-        """Initialize the generator (matplotlib imported lazily)."""
+    def __init__(self):
+        pass
 
-    # ------------------------------------------------------------------
-    # Public chart methods
-    # ------------------------------------------------------------------
+    def plot_grid_size_vs_meeting_time(self, data, save_path=None):
+        """Bar chart of average meeting time vs. grid size."""
 
-    def plot_grid_size_vs_meeting_time(self, data: dict, save_path: str = None) -> None:
-        """
-        Bar chart of average meeting time vs. grid size.
-
-        Args:
-            data:      Dict mapping grid size (int) -> summary dict with 'average'.
-            save_path: If given, save the figure to this path instead of showing.
-        """
         import matplotlib.pyplot as plt
 
         sizes = sorted(data.keys())
@@ -32,14 +22,7 @@ class GraphGenerator:
         ax.grid(axis="y", alpha=0.4)
         self._save_or_show(fig, save_path)
 
-    def plot_player_count_vs_meeting_time(self, data: dict, save_path: str = None) -> None:
-        """
-        Bar chart of average meeting time vs. number of players.
-
-        Args:
-            data:      Dict mapping player count (int) -> summary dict.
-            save_path: Optional save path.
-        """
+    def plot_player_count_vs_meeting_time(self, data, save_path=None):
         import matplotlib.pyplot as plt
 
         counts = sorted(data.keys())
@@ -53,14 +36,7 @@ class GraphGenerator:
         ax.grid(axis="y", alpha=0.4)
         self._save_or_show(fig, save_path)
 
-    def plot_strategy_comparison(self, data: dict, save_path: str = None) -> None:
-        """
-        Grouped bar chart comparing movement strategies.
-
-        Args:
-            data:      Dict mapping strategy name -> summary dict.
-            save_path: Optional save path.
-        """
+    def plot_strategy_comparison(self, data, save_path=None):
         import matplotlib.pyplot as plt
 
         names = list(data.keys())
@@ -77,18 +53,10 @@ class GraphGenerator:
 
     def plot_run_distribution(
         self,
-        runs: list,
-        title: str = "Meeting Time Distribution",
-        save_path: str = None,
-    ) -> None:
-        """
-        Histogram of individual run step counts.
-
-        Args:
-            runs:      List of integer step counts.
-            title:     Chart title.
-            save_path: Optional save path.
-        """
+        runs,
+        title="Meeting Time Distribution",
+        save_path=None,
+    ):
         import matplotlib.pyplot as plt
 
         fig, ax = plt.subplots(figsize=(8, 5))
@@ -104,7 +72,7 @@ class GraphGenerator:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _save_or_show(fig, save_path: str) -> None:
+    def _save_or_show(fig, save_path):
         """Save the figure if *save_path* is provided, otherwise display it."""
         import matplotlib.pyplot as plt
 

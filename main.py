@@ -23,12 +23,7 @@ except ImportError:
 
 
 def run_headless(version: int = 1) -> None:
-    """
-    Execute a text-based simulation and print results to stdout.
-
-    Args:
-        version: Simulation version (1 = basic; 2 = stats; 3 = experiment).
-    """
+    """Execute a text-based simulation and print results to stdout."""
     from simulation.grid import Grid
     from simulation.player import Player
     from simulation.simulation_engine import SimulationEngine

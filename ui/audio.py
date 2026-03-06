@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 
 try:
@@ -9,17 +7,10 @@ except Exception:
 
 
 class AudioManager:
-    """
-    Simple audio manager:
-    - pygame.mixer music + sfx
-    - optional "speak" placeholder that uses on-screen only unless you add TTS
-    """
-
-    def __init__(self) -> None:
+    def __init__(self):
         self._ready = False
-        self._spoken_once: set[str] = set()
+        self._spoken_once = set()
 
-        # Map logical names to files (put your files under assets/audio/)
         self._music = {
             "k2_music": "assets/audio/k2_music.ogg",
             "setup_music": "assets/audio/setup_music.ogg",
@@ -35,7 +26,7 @@ class AudioManager:
         }
         self._cache = {}
 
-    def initialize(self) -> None:
+    def initialize(self):
         if pygame is None:
             return
         try:
@@ -44,7 +35,7 @@ class AudioManager:
         except Exception:
             self._ready = False
 
-    def play_music(self, name: str, loop: bool = True) -> None:
+    def play_music(self, name, loop=True):
         if not self._ready:
             return
         path = self._music.get(name)
@@ -56,7 +47,7 @@ class AudioManager:
         except Exception:
             pass
 
-    def play_sfx(self, name: str) -> None:
+    def play_sfx(self, name):
         if not self._ready:
             return
         path = self._sfx.get(name)
@@ -69,13 +60,11 @@ class AudioManager:
         except Exception:
             pass
 
-    def speak(self, text: str) -> None:
-        # Placeholder: you can upgrade this to pyttsx3 later.
-        # For grading, the simplest is to ship prerecorded prompts as audio files.
-        # If you want TTS, ask me and I’ll add it safely.
+    def speak(self, text):
+        """Optional hook for text-to-speech or other audio prompts."""
         return
 
-    def speak_once(self, key: str, text: str) -> None:
+    def speak_once(self, key, text):
         if key in self._spoken_once:
             return
         self._spoken_once.add(key)

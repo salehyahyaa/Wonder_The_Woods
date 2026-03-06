@@ -55,14 +55,10 @@ class GameWindow:
         self._clock = None
         self._running = False
 
-        # Stats should persist across replays in v2/v3
         self._stats = StatsEngine()
 
-        # Audio (music + prompts)
         self._audio = AudioManager()
 
-        # K–2 spec requires per-person counters.
-        # Fastest: track locally in UI without touching engine.
         self._per_player_steps: dict[int, int] = {}
 
     # ------------------------------------------------------------------

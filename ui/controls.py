@@ -23,16 +23,15 @@ class Controls:
     ACTION_BUTTON = "button"
     ACTION_NONE = "none"
 
-    def __init__(self) -> None:
-        """Initialize default input state."""
-        self._grid_size: int = DEFAULT_GRID_SIZE
-        self._num_players: int = 2
+    def __init__(self):
+        self._grid_size = DEFAULT_GRID_SIZE
+        self._num_players = 2
 
     # ------------------------------------------------------------------
     # Event handling
     # ------------------------------------------------------------------
 
-    def handle_event(self, event) -> dict:
+    def handle_event(self, event):
         """
         Translate a pygame event into an action dictionary.
 
@@ -59,19 +58,19 @@ class Controls:
     # Input accessors
     # ------------------------------------------------------------------
 
-    def get_grid_size_input(self) -> tuple[int, int]:
+    def get_grid_size_input(self):
         """Return the current (width, height) chosen by the user."""
         return (self._grid_size, self._grid_size)
 
-    def get_num_players_input(self) -> int:
+    def get_num_players_input(self):
         """Return the current player count chosen by the user."""
         return self._num_players
 
-    def set_grid_size(self, size: int) -> None:
+    def set_grid_size(self, size):
         """Set grid size, clamped to valid range."""
         self._grid_size = max(MIN_GRID_SIZE, min(MAX_GRID_SIZE, int(size)))
 
-    def set_num_players(self, count: int) -> None:
+    def set_num_players(self, count):
         """Set number of players (clamped to 2..4 for this project spec)."""
         self._num_players = max(2, min(4, int(count)))
 
@@ -79,7 +78,7 @@ class Controls:
     # Private helpers
     # ------------------------------------------------------------------
 
-    def _handle_keydown(self, event) -> dict:
+    def _handle_keydown(self, event):
         """Map keyboard keys to actions."""
         key = event.key
 

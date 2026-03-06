@@ -13,48 +13,26 @@ class SimulationEngine:
       group and move as one unit until all players have merged.
     """
 
-    def __init__(self, grid, players: list, movement_strategy=None) -> None:
-        """
-        Initialize the engine.
-
-        Args:
-            grid:               The Grid in which players wander.
-            players:            List of Player objects.
-            movement_strategy:  A MovementStrategy instance (defaults to
-                                BoundedRandomMovement).
-        """
+    def __init__(self, grid, players, movement_strategy=None):
         self._grid = grid
         self._players = players
         self._strategy = movement_strategy or BoundedRandomMovement()
         self._step_count = 0
 
-        # Groups: a list of sets, each set holds player ids that travel together.
-        self._groups: list[set] = [{p.get_id()} for p in players]
+        self._groups = [{p.get_id()} for p in players]
 
-        # Map player_id -> Player for fast lookup
-        self._player_map: dict = {p.get_id(): p for p in players}
+        self._player_map = {p.get_id(): p for p in players}
 
-        # Positions where meetings happened (for rendering highlights)
-        self._meeting_positions: list = []
+        self._meeting_positions = []
 
-        # Merge any players that start on the same cell
         self._merge_groups()
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
 
-    def step(self) -> bool:
-        """
-        Advance the simulation by one step.
-
-        Each group chooses one random move; all members of the group move
-        to the new position together.  After moving, overlapping groups
-        are merged.
-
-        Returns:
-            True if a new meeting (group merge) occurred this step.
-        """
+    def step(self):
+        """Advance the simulation by one step."""
         self._step_count += 1
         self._meeting_positions = []
 
@@ -73,23 +51,18 @@ class SimulationEngine:
         meeting_occurred = self._merge_groups()
         return meeting_occurred
 
-    def run(self) -> int:
-        """
-        Run the simulation until all players have met (one group remaining).
-
-        Returns:
-            The total number of steps taken.
-        """
+    def run(self):
+        """Run the simulation until all players have met."""
         max_steps = 10_000_000  # safety cap
         while len(self._groups) > 1 and self._step_count < max_steps:
             self.step()
         return self._step_count
 
-    def get_step_count(self) -> int:
+    def get_step_count(self):
         """Return the number of steps executed so far."""
         return self._step_count
 
-    def reset(self) -> None:
+    def reset(self):
         """Reset the simulation: restore all players and clear state."""
         self._step_count = 0
         self._meeting_positions = []
@@ -98,25 +71,19 @@ class SimulationEngine:
         self._groups = [{p.get_id()} for p in self._players]
         self._merge_groups()
 
-    def get_players(self) -> list:
+    def get_players(self):
         """Return the list of Player objects."""
         return self._players
 
-    def check_meetings(self) -> list:
-        """
-        Return the current groups that contain more than one player.
-
-        Returns:
-            List of sets, each set containing the ids of players that share
-            a position.
-        """
+    def check_meetings(self):
+        """Return the current groups that contain more than one player."""
         return [g for g in self._groups if len(g) > 1]
 
-    def get_meeting_positions(self) -> list:
+    def get_meeting_positions(self):
         """Return positions where group merges occurred in the last step."""
         return list(self._meeting_positions)
 
-    def is_finished(self) -> bool:
+    def is_finished(self):
         """Return True when all players are in a single group."""
         return len(self._groups) <= 1
 
@@ -124,13 +91,8 @@ class SimulationEngine:
     # Private helpers
     # ------------------------------------------------------------------
 
-    def _merge_groups(self) -> bool:
-        """
-        Merge any groups that currently share the same grid position.
-
-        Returns:
-            True if at least one merge happened.
-        """
+    def _merge_groups(self):
+        """Merge any groups that currently share the same grid position."""
         merged = False
         changed = True
         while changed:
@@ -157,7 +119,7 @@ class SimulationEngine:
             self._groups = new_groups
         return merged
 
-    def _get_group_position(self, group: set) -> tuple:
+    def _get_group_position(self, group):
         """Return the current position of the representative player in *group*."""
         rep_id = next(iter(group))
         p = self._player_map[rep_id]

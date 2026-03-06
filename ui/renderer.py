@@ -15,14 +15,7 @@ from config import (
 class Renderer:
     """Handles all pygame rendering for the simulation."""
 
-    def __init__(self, screen, cell_size: int = CELL_SIZE) -> None:
-        """
-        Initialize the renderer.
-
-        Args:
-            screen:    The pygame Surface to draw on.
-            cell_size: Pixel size of each grid cell.
-        """
+    def __init__(self, screen, cell_size=CELL_SIZE):
         self._screen = screen
         self._cell_size = cell_size
         self._font_large = None
@@ -38,7 +31,7 @@ class Renderer:
     # Public drawing methods
     # ------------------------------------------------------------------
 
-    def draw_grid(self, grid, offset: tuple[int, int] = (0, 0)) -> None:
+    def draw_grid(self, grid, offset=(0, 0)):
         """Draw the background grid on *self._screen*."""
         if not _PYGAME_AVAILABLE:
             return
@@ -52,7 +45,7 @@ class Renderer:
                 pygame.draw.rect(self._screen, color, rect)
                 pygame.draw.rect(self._screen, BLACK, rect, 1)
 
-    def draw_players(self, players: list, grid, offset: tuple[int, int] = (0, 0)) -> None:
+    def draw_players(self, players, grid, offset=(0, 0)):
         """Draw each player as a filled circle with an id label."""
         if not _PYGAME_AVAILABLE:
             return
@@ -71,14 +64,7 @@ class Renderer:
                 ly = cy - label.get_height() // 2
                 self._screen.blit(label, (lx, ly))
 
-    def draw_celebration(self, screen, steps: int) -> None:
-        """
-        Overlay a semi-transparent celebration banner when players meet.
-
-        Args:
-            screen: The pygame Surface to overlay on.
-            steps:  Step count to display in the message.
-        """
+    def draw_celebration(self, screen, steps):
         if not _PYGAME_AVAILABLE or self._font_large is None:
             return
         sw, sh = screen.get_size()
@@ -98,14 +84,7 @@ class Renderer:
             screen.blit(surf, (sw // 2 - surf.get_width() // 2, y_offset))
             y_offset += surf.get_height() + 10
 
-    def draw_stats(self, screen, stats: dict) -> None:
-        """
-        Draw a stats panel on the right side of the screen.
-
-        Args:
-            screen: Target pygame Surface.
-            stats:  Dict with keys: count, shortest, longest, average.
-        """
+    def draw_stats(self, screen, stats):
         if not _PYGAME_AVAILABLE or self._font_small is None:
             return
         sw = screen.get_width()
@@ -123,16 +102,7 @@ class Renderer:
             screen.blit(surf, (panel_x, y))
             y += surf.get_height() + 4
 
-    def draw_button(self, screen, rect, text: str, color: tuple) -> None:
-        """
-        Draw a labelled rectangular button.
-
-        Args:
-            screen: Target pygame Surface.
-            rect:   tuple (x, y, w, h) OR pygame.Rect
-            text:   Button label.
-            color:  Background colour RGB tuple.
-        """
+    def draw_button(self, screen, rect, text, color):
         if not _PYGAME_AVAILABLE or self._font_small is None:
             return
 
